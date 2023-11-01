@@ -18,7 +18,7 @@ parsed_lines = lines.map(parse_line)
 min_temps = parsed_lines.filter(lambda x: "TMIN" in x[1])
 station_temps = min_temps.map(lambda x: (x[0], x[2]))
 min_temps = station_temps.reduceByKey(lambda x, y: min(x, y))
-results = min_temps.collect();
+results = min_temps.collect()
 
 for result in results:
     print(result[0] + "\t{:.2f}F".format(result[1]))
