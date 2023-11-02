@@ -12,9 +12,12 @@ sc.setLogLevel("error")
 
 lines = sc.textFile("file:///Users/hotamul/SparkProjects/MovieRating/example/customer-orders.csv")
 total_orders_by_customer = lines.map(extract_customer_price_pairs)
-orders_by_customer = total_orders_by_customer.reduceByKey(lambda x, y: x + y).sortByKey()
+orders_by_customer = total_orders_by_customer.reduceByKey(lambda x, y: x + y)
 
-results = orders_by_customer.collect()
+orders_by_customer_sorted = orders_by_customer.map(lambda x: (x[1], x[0])).sortByKey()
+
+results = orders_by_customer_sorted.collect()
 
 for result in results:
-    print("%2i:\t%.2f" % result)
+    total_price, customer_id = result
+    print("%2i:\t%.2f" % (customer_id, total_price))
